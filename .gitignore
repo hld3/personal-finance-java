@@ -24,5 +24,13 @@ hs_err_pid*
 replay_pid*
 
 # gradle
-.gradle
+.gradle/
 build/
+
+# jdtls, I think.
+.project
+.classpath
+.settings/
+
+# java
+bin/
