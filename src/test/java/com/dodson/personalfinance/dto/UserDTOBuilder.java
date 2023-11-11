@@ -1,4 +1,4 @@
-package com.dodson.personalfinance.model;
+package com.dodson.personalfinance.dto;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -7,14 +7,13 @@ import java.util.UUID;
 
 import com.github.javafaker.Faker;
 
-public class UserModelBuilder {
+public class UserDTOBuilder {
 
 	Faker faker = new Faker();
-	private String userId = UUID.randomUUID().toString();
-
-	public UserModel build() {
-		UserModel user = new UserModel();
-		user.setUserId(userId);
+	
+	public UserDTO build() {
+		UserDTO user = new UserDTO();
+		user.setUserId(UUID.randomUUID());
 		user.setFirstName(faker.name().firstName());
 		user.setLastName(faker.name().lastName());
 		user.setEmail(faker.internet().emailAddress());
@@ -31,10 +30,5 @@ public class UserModelBuilder {
 				Date.from(LocalDate.of(1999, 12, 19).atStartOfDay(ZoneId.systemDefault()).toInstant()),
 				Date.from(LocalDate.of(2023, 12, 19).atStartOfDay(ZoneId.systemDefault()).toInstant()));
 		return fakeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	}
-
-	public UserModelBuilder withUserId(String userId) {
-		this.userId = userId;
-		return this;
 	}
 }

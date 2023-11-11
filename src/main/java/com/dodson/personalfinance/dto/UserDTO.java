@@ -1,59 +1,41 @@
-package com.dodson.personalfinance.model;
+package com.dodson.personalfinance.dto;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "user_model")
-public class UserModel {
+public class UserDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@JsonProperty
+	private UUID userId;
 
-	@Column(name = "user_id", columnDefinition = "char(36)")
-	private String userId;
-
-	@Column(name = "first_name", length = 30)
+	@JsonProperty
 	private String firstName;
 
-	@Column(name = "last_name", length = 30)
+	@JsonProperty
 	private String lastName;
 
-	@Column(name = "email", length = 55)
+	@JsonProperty
 	private String email;
 
-	@Column(name = "phone", length = 30)
+	@JsonProperty
 	private String phone;
 
-	@Column(name = "date_of_birth")
+	@JsonProperty
 	private LocalDate dateOfBirth;
 
-	@Column(name = "creation_date")
+	@JsonProperty
 	private LocalDate creationDate;
 
-	@Column(name = "password_hash", length = 50)
+	@JsonProperty
 	private String passwordHash;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUserId() {
+	public UUID getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
 

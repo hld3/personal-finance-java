@@ -1,15 +1,16 @@
 package com.dodson.personalfinance.repository;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 
 import com.dodson.personalfinance.model.UserModel;
 import com.dodson.personalfinance.model.UserModelBuilder;
@@ -32,9 +33,10 @@ public class UserRepositoryIntegrationTest {
 
 	@Test
 	public void test_retrieveUserByUserId() {
-		UUID userId = UUID.randomUUID();
+		String userId = UUID.randomUUID().toString();
 		UserModel user = new UserModelBuilder().withUserId(userId).build();
-		userRepository.save(user);
+		UserModel noiseUser = new UserModelBuilder().build();
+		userRepository.saveAllAndFlush(List.of(user, noiseUser));
 
 		UserModel foundUser = userRepository.findUserByUserId(userId);
 
