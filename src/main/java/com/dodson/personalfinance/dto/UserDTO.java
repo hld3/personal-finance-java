@@ -1,12 +1,15 @@
 package com.dodson.personalfinance.dto;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 public class UserDTO {
 
+	@NotNull
 	@JsonProperty
 	private UUID userId;
 
@@ -16,6 +19,7 @@ public class UserDTO {
 	@JsonProperty
 	private String lastName;
 
+	@Email
 	@JsonProperty
 	private String email;
 
@@ -23,11 +27,12 @@ public class UserDTO {
 	private String phone;
 
 	@JsonProperty
-	private LocalDate dateOfBirth;
+	private long dateOfBirth;
 
 	@JsonProperty
-	private LocalDate creationDate;
+	private long creationDate;
 
+	@NotNull
 	@JsonProperty
 	private String passwordHash;
 
@@ -71,19 +76,19 @@ public class UserDTO {
 		this.phone = phone;
 	}
 
-	public LocalDate getDateOfBirth() {
+	public long getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(long dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public LocalDate getCreationDate() {
+	public long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(LocalDate creationDate) {
+	public void setCreationDate(long creationDate) {
 		this.creationDate = creationDate;
 	}
 

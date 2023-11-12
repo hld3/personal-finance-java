@@ -33,10 +33,10 @@ public class UserModel {
 	private String phone;
 
 	@Column(name = "date_of_birth")
-	private LocalDate dateOfBirth;
+	private long dateOfBirth;
 
 	@Column(name = "creation_date")
-	private LocalDate creationDate;
+	private long creationDate;
 
 	@Column(name = "password_hash", length = 50)
 	private String passwordHash;
@@ -89,19 +89,19 @@ public class UserModel {
 		this.phone = phone;
 	}
 
-	public LocalDate getDateOfBirth() {
+	public long getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(long dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public LocalDate getCreationDate() {
+	public long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(LocalDate creationDate) {
+	public void setCreationDate(long creationDate) {
 		this.creationDate = creationDate;
 	}
 
