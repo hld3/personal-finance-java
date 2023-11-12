@@ -1,6 +1,7 @@
 package com.dodson.personalfinance.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,6 @@ public class UserControllerUnitTest {
 	@Test
 	public void test_registerNewUser() throws Exception {
 		UserDTO user = new UserDTOBuilder().build();
-		System.out.println(new ObjectMapper().writeValueAsString(user));
 
 		mockMvc.perform(post("/user/register")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -54,6 +54,10 @@ public class UserControllerUnitTest {
 		mockMvc.perform(post("/user/register")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(user)))
-			.andExpect(status().isInternalServerError());
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.errors").exists())
+			.andExpect(jsonPath("$.errors.userId").value("must not be null"))
+			.andExpect(jsonPath("$.errors.email").value("must be a well-formed email address"))
+			;
 	}
 }

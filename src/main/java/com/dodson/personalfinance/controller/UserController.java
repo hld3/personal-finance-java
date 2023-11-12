@@ -1,7 +1,12 @@
 package com.dodson.personalfinance.controller;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +28,15 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserDTO user) {
+	public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			Map<String, String> errors = bindingResult.getFieldErrors()
+				.stream()
+				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+
+			return ResponseEntity.badRequest().body(Map.of("errors", errors));
+		}
+
 		try {
 			userService.registerNewUser(user);
 			return ResponseEntity.ok("User registered successfully");
