@@ -39,7 +39,7 @@ public class UserController {
 
 		try {
 			userService.registerNewUser(user);
-			return ResponseEntity.ok("User registered successfully");
+			return ResponseEntity.ok("User registered successfully.");
 		} catch (Exception e) {
 			// TODO logging.
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user: " + e.getMessage());

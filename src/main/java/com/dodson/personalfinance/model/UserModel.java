@@ -1,7 +1,5 @@
 package com.dodson.personalfinance.model;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +15,7 @@ public class UserModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "user_id", columnDefinition = "char(36)")
+	@Column(name = "user_id", unique = true, columnDefinition = "char(36)")
 	private String userId;
 
 	@Column(name = "first_name", length = 30)

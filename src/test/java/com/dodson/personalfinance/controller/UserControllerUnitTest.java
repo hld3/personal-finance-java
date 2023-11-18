@@ -3,6 +3,8 @@ package com.dodson.personalfinance.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +44,7 @@ public class UserControllerUnitTest {
 		mockMvc.perform(post("/user/register")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(user)))
-			.andExpect(status().isOk());
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -54,10 +56,20 @@ public class UserControllerUnitTest {
 		mockMvc.perform(post("/user/register")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(user)))
-			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.errors").exists())
-			.andExpect(jsonPath("$.errors.userId").value("must not be null"))
-			.andExpect(jsonPath("$.errors.email").value("must be a well-formed email address"))
-			;
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.errors").exists())
+				.andExpect(jsonPath("$.errors.userId").value("must not be null"))
+				.andExpect(jsonPath("$.errors.email").value("must be a well-formed email address"));
+	}
+
+	@Test
+	public void test_whenThrowsException_thenResponseStatusIsInternalServerError() throws Exception {
+		UserDTO user = new UserDTOBuilder().build();
+		doThrow(new RuntimeException("Internal error")).when(userService).registerNewUser(any(UserDTO.class));
+
+		mockMvc.perform(post("/user/register")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(user)))
+				.andExpect(status().isInternalServerError());
 	}
 }

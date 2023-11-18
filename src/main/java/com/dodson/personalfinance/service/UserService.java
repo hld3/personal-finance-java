@@ -19,7 +19,6 @@ public class UserService {
 
 	public String registerNewUser(UserDTO user) {
 		UserModel newUser = mapNewUser(user);
-		// TODO hash password
 		
 		// Save the user to the database
 		userRepository.save(newUser);
@@ -35,7 +34,7 @@ public class UserService {
 		toUser.setPhone(fromUser.getPhone());
 		toUser.setDateOfBirth(fromUser.getDateOfBirth());
 		toUser.setCreationDate(System.currentTimeMillis());
-		toUser.setPasswordHash(fromUser.getPasswordHash());
+		toUser.setPasswordHash(fromUser.getPasswordHash()); // TODO hash password
 		return toUser;
 	}
 }

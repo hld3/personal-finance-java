@@ -11,7 +11,7 @@ public class UserDTO {
 
 	@NotNull
 	@JsonProperty
-	private UUID userId;
+	private String userId;
 
 	@JsonProperty
 	private String firstName;
@@ -36,11 +36,11 @@ public class UserDTO {
 	@JsonProperty
 	private String passwordHash;
 
-	public UUID getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(UUID userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

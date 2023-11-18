@@ -10,7 +10,7 @@ public class UserDTOBuilder {
 	
 	public UserDTO build() {
 		UserDTO user = new UserDTO();
-		user.setUserId(UUID.randomUUID());
+		user.setUserId(UUID.randomUUID().toString());
 		user.setFirstName(faker.name().firstName());
 		user.setLastName(faker.name().lastName());
 		user.setEmail(faker.internet().emailAddress());
