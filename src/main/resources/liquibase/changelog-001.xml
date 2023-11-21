@@ -30,4 +30,9 @@
 			<column name="user_id" />
 		</createIndex>
 	</changeSet>
+
+	<changeSet id="001-003" author="Harry Dodson">
+		<comment>Altering password length for hashing</comment>
+		<modifyDataType tableName="user_model" columnName="password_hash" newDataType="varchar(100)" />
+	</changeSet>
 </databaseChangeLog>

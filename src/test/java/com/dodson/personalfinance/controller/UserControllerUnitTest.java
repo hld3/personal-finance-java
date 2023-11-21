@@ -50,7 +50,6 @@ public class UserControllerUnitTest {
 	@Test
 	public void test_registerInvalidUserDTOData() throws Exception {
 		UserDTO user = new UserDTOBuilder().build();
-		user.setUserId(null);
 		user.setEmail("not an email");
 
 		mockMvc.perform(post("/user/register")
@@ -58,7 +57,6 @@ public class UserControllerUnitTest {
 				.content(new ObjectMapper().writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.errors").exists())
-				.andExpect(jsonPath("$.errors.userId").value("must not be null"))
 				.andExpect(jsonPath("$.errors.email").value("must be a well-formed email address"));
 	}
 

@@ -1,7 +1,5 @@
 package com.dodson.personalfinance.dto;
 
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
@@ -9,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class UserDTO {
 
-	@NotNull
 	@JsonProperty
 	private String userId;
 
@@ -34,7 +31,7 @@ public class UserDTO {
 
 	@NotNull
 	@JsonProperty
-	private String passwordHash;
+	private String password;
 
 	public String getUserId() {
 		return userId;
@@ -92,11 +89,11 @@ public class UserDTO {
 		this.creationDate = creationDate;
 	}
 
-	public String getPasswordHash() {
-		return passwordHash;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
+	public void setPassword(String passwordHash) {
+		this.password = passwordHash;
 	}
 }

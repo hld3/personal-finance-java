@@ -2,14 +2,19 @@ package com.dodson.personalfinance.service;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.dodson.personalfinance.dto.UserDTO;
 import com.dodson.personalfinance.model.UserModel;
 import com.dodson.personalfinance.repository.UserRepository;
+import com.dodson.personalfinance.utility.PasswordHashing;
 
 @Service
 public class UserService {
+
+	private Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	private UserRepository userRepository;
 
@@ -26,6 +31,13 @@ public class UserService {
 	}
 
 	UserModel mapNewUser(UserDTO fromUser) {
+		String hashedPass;
+		try {
+			hashedPass = PasswordHashing.hashPassword(fromUser.getPassword());
+		} catch (Exception e) {
+			logger.error("There was an error hashing a password, saving as plain text: " + fromUser.getPassword() + ". Error: " + e.getMessage());
+			hashedPass = fromUser.getPassword();
+		}
 		UserModel toUser = new UserModel();
 		toUser.setUserId(UUID.randomUUID().toString());
 		toUser.setFirstName(fromUser.getFirstName());
@@ -34,7 +46,7 @@ public class UserService {
 		toUser.setPhone(fromUser.getPhone());
 		toUser.setDateOfBirth(fromUser.getDateOfBirth());
 		toUser.setCreationDate(System.currentTimeMillis());
-		toUser.setPasswordHash(fromUser.getPasswordHash()); // TODO hash password
+		toUser.setPasswordHash(hashedPass); 
 		return toUser;
 	}
 }

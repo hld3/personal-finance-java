@@ -17,7 +17,7 @@ public class UserDTOBuilder {
 		user.setPhone(faker.phoneNumber().phoneNumber());
 		user.setDateOfBirth(faker.random().nextLong());
 		user.setCreationDate(faker.random().nextLong());
-		user.setPasswordHash(faker.internet().password());
+		user.setPassword(faker.internet().password());
 
 		return user;
 	}
