@@ -16,7 +16,7 @@ import com.dodson.personalfinance.model.UserModel;
 import com.dodson.personalfinance.model.UserModelBuilder;
 
 @DataJpaTest
-@ActiveProfiles("test")
+@ActiveProfiles("h2")
 public class UserRepositoryIntegrationTest {
 
 	@Autowired

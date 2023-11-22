@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.dodson.personalfinance.dto.UserDTO;
 import com.dodson.personalfinance.dto.UserDTOBuilder;
@@ -16,6 +17,7 @@ import com.dodson.personalfinance.utility.PasswordHashing;
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
+@ActiveProfiles("mysql")
 public class UserServiceIntegrationTest {
 
 	@Autowired
