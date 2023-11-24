@@ -18,7 +18,7 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("mysql")
-public class UserServiceIntegrationTest {
+public class UserRegisterServiceIntegrationTest {
 
 	@Autowired
 	private UserRegisterService userService;

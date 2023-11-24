@@ -17,7 +17,7 @@ import com.dodson.personalfinance.model.UserModel;
 import com.dodson.personalfinance.repository.UserRepository;
 import com.dodson.personalfinance.utility.PasswordHashing;
 
-public class UserServiceUnitTest {
+public class UserRegisterServiceUnitTest {
 
 	@Mock
 	private UserRepository userRepository;
