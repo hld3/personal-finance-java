@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.dodson.personalfinance.dto.UserDTO;
 import com.dodson.personalfinance.dto.UserDTOBuilder;
-import com.dodson.personalfinance.service.UserService;
+import com.dodson.personalfinance.service.UserRegisterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +27,7 @@ public class UserControllerUnitTest {
 	private MockMvc mockMvc;
 
 	@Mock
-	private UserService userService;
+	private UserRegisterService userService;
 
 	@InjectMocks
 	private UserController userController;

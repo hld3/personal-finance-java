@@ -12,13 +12,13 @@ import com.dodson.personalfinance.repository.UserRepository;
 import com.dodson.personalfinance.utility.PasswordHashing;
 
 @Service
-public class UserService {
+public class UserRegisterService {
 
-	private Logger logger = LoggerFactory.getLogger(UserService.class);
+	private Logger logger = LoggerFactory.getLogger(UserRegisterService.class);
 
 	private UserRepository userRepository;
 
-	UserService(UserRepository userRepository) {
+	UserRegisterService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 

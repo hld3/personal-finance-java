@@ -23,7 +23,7 @@ public class UserServiceUnitTest {
 	private UserRepository userRepository;
 
 	@InjectMocks
-	private UserService userService;
+	private UserRegisterService userService;
 
 	@BeforeEach
 	void setUp() {

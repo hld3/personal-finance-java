@@ -21,7 +21,7 @@ import jakarta.transaction.Transactional;
 public class UserServiceIntegrationTest {
 
 	@Autowired
-	private UserService userService;
+	private UserRegisterService userService;
 
 	@Autowired
 	private UserRepository userRepository;

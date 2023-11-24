@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dodson.personalfinance.dto.LoginDTO;
 import com.dodson.personalfinance.dto.UserDTO;
-import com.dodson.personalfinance.service.UserService;
+import com.dodson.personalfinance.service.UserRegisterService;
 
 import jakarta.validation.Valid;
 
@@ -24,20 +25,17 @@ import jakarta.validation.Valid;
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	private UserService userService;
+	private UserRegisterService userService;
 
-	UserController(UserService userService) {
+	UserController(UserRegisterService userService) {
 		this.userService = userService;
 	}
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			Map<String, String> errors = bindingResult.getFieldErrors()
-				.stream()
-				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
-
-			logger.error("There was an error with the request: " + errors);
+			Map<String, String> errors = constructErrors(bindingResult);
+			logger.error("There was an error with the register request: " + errors);
 			return ResponseEntity.badRequest().body(Map.of("errors", errors));
 		}
 
@@ -46,8 +44,32 @@ public class UserController {
 			return ResponseEntity.ok("User registered successfully.");
 		} catch (Exception e) {
 			logger.error("Error registering new user: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error registering user: " + e.getMessage());
 		}
 	}
-}
 
+	@PostMapping("/login")
+	public ResponseEntity<?> userLogin(@Valid @RequestBody LoginDTO user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			Map<String, String> errors = constructErrors(bindingResult);
+			logger.error("There was an error with the login request: " + errors);
+			return ResponseEntity.badRequest().body(Map.of("errors", errors));
+		}
+
+		try {
+			// TODO make the service to check user login credentials.
+			return ResponseEntity.ok("The JWT token?");
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error checking user login credentials: " + e.getMessage());
+		}
+	}
+
+	private Map<String, String> constructErrors(BindingResult bindingResult) {
+		return bindingResult.getFieldErrors()
+				.stream()
+				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+	}
+}
