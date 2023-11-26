@@ -10,4 +10,7 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
 	@Query("SELECT u FROM UserModel u WHERE userId = :userId")
 	UserModel findUserByUserId(@Param("userId") String userId);
+
+	@Query("SELECT u.passwordHash FROM UserModel u WHERE email = :email")
+	String retrievePasswordHashByEmail(@Param("email") String email);
 }

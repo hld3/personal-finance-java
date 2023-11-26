@@ -43,4 +43,15 @@ public class UserRepositoryIntegrationTest {
 		assertNotNull(foundUser);
 		assertThat(user, is(foundUser));
 	}
+
+	@Test
+	public void test_retrievePasswordHashByEmail() {
+		UserModel user = new UserModelBuilder().build();
+		UserModel noise = new UserModelBuilder().build();
+		userRepository.saveAllAndFlush(List.of(user, noise));
+
+		String foundPassword = userRepository.retrievePasswordHashByEmail(user.getEmail());
+
+		assertThat(foundPassword, is(user.getPasswordHash()));
+	}
 }
