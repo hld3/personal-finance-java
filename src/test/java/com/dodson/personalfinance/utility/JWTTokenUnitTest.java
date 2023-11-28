@@ -16,13 +16,13 @@ public class JWTTokenUnitTest {
 
 	@Test
 	void testCreateJWTToken() {
-		String token = JWTToken.createJWTToken(UUID.randomUUID());
+		String token = JWTToken.createJWTToken(UUID.randomUUID().toString());
 		assertNotNull(token);
 	}
 
 	@Test
 	public void testTokenExpiration() {
-		String token = JWTToken.createJWTToken(UUID.randomUUID());
+		String token = JWTToken.createJWTToken(UUID.randomUUID().toString());
 		DecodedJWT decoded = JWT.decode(token);
 		assertTrue(decoded.getExpiresAt().after(new Date()),
 				"Token Expiration time should be after current time");
@@ -30,7 +30,7 @@ public class JWTTokenUnitTest {
 
 	@Test
 	public void testTokenSubject() {
-		UUID userId = UUID.randomUUID();
+		String userId = UUID.randomUUID().toString();
 		String token = JWTToken.createJWTToken(userId);
 		DecodedJWT decoded = JWT.decode(token);
 		assertEquals(userId.toString(), decoded.getSubject(), "Subject UUIDs should match");
@@ -38,7 +38,7 @@ public class JWTTokenUnitTest {
 
 	@Test
 	public void testTokenIssuer() {
-		String token = JWTToken.createJWTToken(UUID.randomUUID());
+		String token = JWTToken.createJWTToken(UUID.randomUUID().toString());
 		DecodedJWT decoded = JWT.decode(token);
 		assertEquals("auth0", decoded.getIssuer(), "Issuer should be 'auth0'");
 	}

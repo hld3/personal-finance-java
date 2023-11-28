@@ -1,5 +1,6 @@
 package com.dodson.personalfinance.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class UserRegisterService {
 		String hashedPass;
 		try {
 			hashedPass = PasswordHashing.hashPassword(fromUser.getPassword());
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
 			logger.error("There was an error hashing a password, saving as plain text: " + fromUser.getPassword() + ". Error: " + e.getMessage());
 			hashedPass = fromUser.getPassword();
 		}

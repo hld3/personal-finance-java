@@ -1,7 +1,6 @@
 package com.dodson.personalfinance.utility;
 
 import java.util.Date;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ public class JWTToken {
 
 	private static Logger logger = LoggerFactory.getLogger(JWTToken.class);
 
-	public static String createJWTToken(UUID userId) {
+	public static String createJWTToken(String userId) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256("secret"); // TODO I should do something about the secret key.
 

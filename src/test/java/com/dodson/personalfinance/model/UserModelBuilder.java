@@ -8,6 +8,7 @@ public class UserModelBuilder {
 
 	Faker faker = new Faker();
 	private String userId = UUID.randomUUID().toString();
+	private String passwordHash = faker.crypto().sha256();
 
 	public UserModel build() {
 		UserModel user = new UserModel();
@@ -18,9 +19,14 @@ public class UserModelBuilder {
 		user.setPhone(faker.phoneNumber().phoneNumber());
 		user.setDateOfBirth(faker.random().nextLong());
 		user.setCreationDate(faker.random().nextLong());
-		user.setPasswordHash(faker.internet().password());
+		user.setPasswordHash(passwordHash);
 
 		return user;
+	}
+
+	public UserModelBuilder withPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+		return this;
 	}
 
 	public UserModelBuilder withUserId(String userId) {

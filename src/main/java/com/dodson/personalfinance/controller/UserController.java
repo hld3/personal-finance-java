@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dodson.personalfinance.dto.LoginDTO;
 import com.dodson.personalfinance.dto.UserDTO;
+import com.dodson.personalfinance.service.UserLoginService;
 import com.dodson.personalfinance.service.UserRegisterService;
 
 import jakarta.validation.Valid;
@@ -25,10 +26,11 @@ import jakarta.validation.Valid;
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	private UserRegisterService userService;
+	private UserRegisterService registerService;
+	private UserLoginService loginService;
 
 	UserController(UserRegisterService userService) {
-		this.userService = userService;
+		this.registerService = userService;
 	}
 
 	@PostMapping("/register")
@@ -40,7 +42,7 @@ public class UserController {
 		}
 
 		try {
-			userService.registerNewUser(user);
+			registerService.registerNewUser(user);
 			return ResponseEntity.ok("User registered successfully.");
 		} catch (Exception e) {
 			logger.error("Error registering new user: " + e.getMessage());
@@ -50,7 +52,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> userLogin(@Valid @RequestBody LoginDTO user, BindingResult bindingResult) {
+	public ResponseEntity<?> userLogin(@Valid @RequestBody LoginDTO login, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			Map<String, String> errors = constructErrors(bindingResult);
 			logger.error("There was an error with the login request: " + errors);
@@ -58,10 +60,14 @@ public class UserController {
 		}
 
 		try {
-			// TODO make the service to check user login credentials.
-			return ResponseEntity.ok("The JWT token?");
+			String token = loginService.confirmLogin(login);
+			if (token != null) {
+				return ResponseEntity.ok(token);
+			} else {
+				logger.error("Login for user: " + login.getEmail() + " failed.");
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Error checking user login credentials: " + e.getMessage());
 		}
