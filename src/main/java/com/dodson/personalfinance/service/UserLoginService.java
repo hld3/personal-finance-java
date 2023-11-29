@@ -25,14 +25,16 @@ public class UserLoginService {
 	public String confirmLogin(LoginDTO login) {
 		UserModel user = userRepository.retrievePasswordHashByEmail(login.getEmail());
 
-		try {
-			String loginHashedPW = PasswordHashing.hashPassword(login.getPassword());
-			if (loginHashedPW.equals(user.getPasswordHash())) {
-				String token = JWTToken.createJWTToken(user.getUserId());
-				return token;
+		if (user != null) {
+			try {
+				String loginHashedPW = PasswordHashing.hashPassword(login.getPassword());
+				if (loginHashedPW.equals(user.getPasswordHash())) {
+					String token = JWTToken.createJWTToken(user.getUserId());
+					return token;
+				}
+			} catch (NoSuchAlgorithmException e) {
+				logger.error("There was an error getting password hash to login, " + e.getMessage());
 			}
-		} catch (NoSuchAlgorithmException e) {
-			logger.error("There was an error getting password hash to login, " + e.getMessage());
 		}
 		return null;
 	}
