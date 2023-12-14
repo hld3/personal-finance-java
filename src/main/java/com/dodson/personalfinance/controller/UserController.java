@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dodson.personalfinance.dto.LoginDTO;
 import com.dodson.personalfinance.dto.UserDTO;
+import com.dodson.personalfinance.dto.UserProfileDTO;
 import com.dodson.personalfinance.service.UserLoginService;
 import com.dodson.personalfinance.service.UserRegisterService;
 
@@ -29,8 +30,9 @@ public class UserController {
 	private UserRegisterService registerService;
 	private UserLoginService loginService;
 
-	UserController(UserRegisterService userService) {
+	UserController(UserRegisterService userService, UserLoginService loginService) {
 		this.registerService = userService;
+		this.loginService = loginService;
 	}
 
 	@PostMapping("/register")
@@ -46,8 +48,7 @@ public class UserController {
 			return ResponseEntity.ok("User registered successfully.");
 		} catch (Exception e) {
 			logger.error("Error registering new user: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Error registering user: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -60,16 +61,16 @@ public class UserController {
 		}
 
 		try {
-			String token = loginService.confirmLogin(login);
-			if (token != null) {
-				return ResponseEntity.ok(token);
+			UserProfileDTO profile = loginService.confirmLogin(login);
+			if (profile != null) {
+				return ResponseEntity.ok(profile);
 			} else {
 				logger.error("Login for user: " + login.getEmail() + " failed.");
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 			}
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Error checking user login credentials: " + e.getMessage());
+			logger.error("Error checking user login credentials: " + e.getMessage(), e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
