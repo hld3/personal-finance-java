@@ -1,11 +1,14 @@
 package com.dodson.personalfinance.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
+
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +27,7 @@ import com.dodson.personalfinance.dto.UserDTOBuilder;
 import com.dodson.personalfinance.dto.UserProfileDTO;
 import com.dodson.personalfinance.dto.UserProfileDTOBuilder;
 import com.dodson.personalfinance.service.UserLoginService;
+import com.dodson.personalfinance.service.UserProfileService;
 import com.dodson.personalfinance.service.UserRegisterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,6 +41,9 @@ public class UserControllerUnitTest {
 
 	@Mock
 	private UserLoginService loginService;
+
+	@Mock
+	private UserProfileService userProfileService;
 
 	@InjectMocks
 	private UserController userController;
@@ -114,5 +121,32 @@ public class UserControllerUnitTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(login)))
 				.andExpect(status().isInternalServerError());
+	}
+
+	@Test
+	public void test_whenRetrieveProfileIsSuccessful_thenProfileDataIsReturned() throws Exception {
+		String userId = UUID.randomUUID().toString();
+		UserDTO profile = new UserDTOBuilder().build();
+		when(userProfileService.retrieveUserProfile(any(String.class))).thenReturn(profile);
+
+		mockMvc.perform(get("/user/profile")
+				.param("user-id", userId))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.userId").value(profile.getUserId()))
+				.andExpect(jsonPath("$.firstName").value(profile.getFirstName()))
+				.andExpect(jsonPath("$.lastName").value(profile.getLastName()))
+				.andExpect(jsonPath("$.email").value(profile.getEmail()))
+				.andExpect(jsonPath("$.phone").value(profile.getPhone()))
+				.andExpect(jsonPath("$.creationDate").value(profile.getCreationDate()))
+				.andExpect(jsonPath("$.dateOfBirth").value(profile.getDateOfBirth()));
+	}
+
+	@Test
+	public void test_whenRetrieveProfileFails_thenBadRequestIsReturned() throws Exception {
+		when(userProfileService.retrieveUserProfile(any(String.class))).thenReturn(null);
+
+		mockMvc.perform(get("/user/profile")
+				.param("user-id", UUID.randomUUID().toString()))
+				.andExpect(status().isBadRequest());
 	}
 }

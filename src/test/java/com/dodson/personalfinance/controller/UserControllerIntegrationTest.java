@@ -3,9 +3,12 @@ package com.dodson.personalfinance.controller;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +61,7 @@ public class UserControllerIntegrationTest {
 		LoginDTO login = new LoginDTOBuilder().build();
 		String pwHash = PasswordHashing.hashPassword(login.getPassword());
 		UserModel um = new UserModelBuilder().withEmailAndPassword(login.getEmail(), pwHash).build();
-		userRepository.save(um);
+		userRepository.saveAndFlush(um);
 
 		MvcResult result = mockMvc.perform(post("/user/login")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -82,11 +85,39 @@ public class UserControllerIntegrationTest {
 	public void test_userLoginFails_unauthorized() throws Exception {
 		LoginDTO login = new LoginDTOBuilder().build();
 		UserModel um = new UserModelBuilder().withEmailAndPassword(login.getEmail(), "wrong_password").build();
-		userRepository.save(um);
+		userRepository.saveAndFlush(um);
 
 		mockMvc.perform(post("/user/login")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(login)))
 				.andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	public void test_whenRetrieveProfileIsSuccessful_thenProfileDataIsReturned() throws Exception {
+		String userId = UUID.randomUUID().toString();
+		UserModel userModel = new UserModelBuilder().withUserId(userId).build();
+		userRepository.saveAndFlush(userModel);
+
+		MvcResult result = mockMvc.perform(get("/user/profile")
+				.param("user-id", userId))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		UserDTO userDTO = om.readValue(result.getResponse().getContentAsString(), UserDTO.class);
+		assertEquals(userDTO.getUserId(), userModel.getUserId());
+		assertEquals(userDTO.getFirstName(), userModel.getFirstName());
+		assertEquals(userDTO.getLastName(), userModel.getLastName());
+		assertEquals(userDTO.getEmail(), userModel.getEmail());
+		assertEquals(userDTO.getPhone(), userModel.getPhone());
+		assertEquals(userDTO.getDateOfBirth(), userModel.getDateOfBirth());
+		assertEquals(userDTO.getCreationDate(), userModel.getCreationDate());
+	}
+
+	@Test
+	public void test_whenRetrieveProfileFails_thenBadRequestIsReturned() throws Exception {
+		mockMvc.perform(get("/user/profile")
+				.param("user-id", UUID.randomUUID().toString()))
+				.andExpect(status().isBadRequest());
 	}
 }
