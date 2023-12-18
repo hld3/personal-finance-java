@@ -7,10 +7,11 @@ import com.github.javafaker.Faker;
 public class UserDTOBuilder {
 
 	Faker faker = new Faker();
+	String userId = UUID.randomUUID().toString();
 	
 	public UserDTO build() {
 		UserDTO user = new UserDTO();
-		user.setUserId(UUID.randomUUID().toString());
+		user.setUserId(userId);
 		user.setFirstName(faker.name().firstName());
 		user.setLastName(faker.name().lastName());
 		user.setEmail(faker.internet().emailAddress());
@@ -20,5 +21,10 @@ public class UserDTOBuilder {
 		user.setPassword(faker.internet().password());
 
 		return user;
+	}
+
+	public UserDTOBuilder withUserId(String userId) {
+		this.userId = userId;
+		return this;
 	}
 }
