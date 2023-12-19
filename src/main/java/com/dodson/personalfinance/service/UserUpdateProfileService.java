@@ -17,8 +17,11 @@ public class UserUpdateProfileService {
 
 	public UserModel updateUserProfile(UserDTO userDTO) {
 		UserModel userModel = userRepository.findUserByUserId(userDTO.getUserId());
-		updateModel(userModel, userDTO);
-		return userRepository.save(userModel);
+		if (userModel != null) {
+			updateModel(userModel, userDTO);
+			return userRepository.save(userModel);
+		}
+		return null;
 	}
 
 	private void updateModel(UserModel toUser, UserDTO fromUser) {

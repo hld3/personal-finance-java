@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,9 +27,11 @@ import com.dodson.personalfinance.dto.UserDTO;
 import com.dodson.personalfinance.dto.UserDTOBuilder;
 import com.dodson.personalfinance.dto.UserProfileDTO;
 import com.dodson.personalfinance.dto.UserProfileDTOBuilder;
+import com.dodson.personalfinance.model.UserModelBuilder;
 import com.dodson.personalfinance.service.UserLoginService;
 import com.dodson.personalfinance.service.UserProfileService;
 import com.dodson.personalfinance.service.UserRegisterService;
+import com.dodson.personalfinance.service.UserUpdateProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,6 +47,9 @@ public class UserControllerUnitTest {
 
 	@Mock
 	private UserProfileService userProfileService;
+
+	@Mock
+	private UserUpdateProfileService userUpdateProfileService;
 
 	@InjectMocks
 	private UserController userController;
@@ -148,5 +154,27 @@ public class UserControllerUnitTest {
 		mockMvc.perform(get("/user/profile")
 				.param("user-id", UUID.randomUUID().toString()))
 				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void test_whenUpdateProfileIsSuccessful_thenOkStatusIsReturned() throws Exception {
+		UserDTO userDTO = new UserDTOBuilder().build();
+		when(userUpdateProfileService.updateUserProfile(any(UserDTO.class))).thenReturn(new UserModelBuilder().build());
+
+		mockMvc.perform(put("/user/update")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(new ObjectMapper().writeValueAsString(userDTO)))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void test_whenUpdateProfileFails_thenNotFoundStatusIsReturned() throws Exception {
+		UserDTO userDTO = new UserDTOBuilder().build();
+		when(userUpdateProfileService.updateUserProfile(any(UserDTO.class))).thenReturn(null);
+
+		mockMvc.perform(put("/user/update")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(new ObjectMapper().writeValueAsString(userDTO)))
+			.andExpect(status().isNotFound());
 	}
 }

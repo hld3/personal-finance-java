@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -119,5 +120,25 @@ public class UserControllerIntegrationTest {
 		mockMvc.perform(get("/user/profile")
 				.param("user-id", UUID.randomUUID().toString()))
 				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void test_whenProfileUpdateIsSuccessful_thenProfileIsUpdated() throws Exception {
+		UserDTO userDTO = new UserDTOBuilder().build();
+		UserModel userModel = new UserModelBuilder().withUserId(userDTO.getUserId()).build();
+		userRepository.saveAndFlush(userModel);
+
+		mockMvc.perform(put("/user/update")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(userDTO)))
+				.andExpect(status().isOk());
+
+		UserModel updateModel = userRepository.findUserByUserId(userModel.getUserId());
+		assertNotNull(updateModel);
+		assertEquals(updateModel.getFirstName(), userDTO.getFirstName());
+		assertEquals(updateModel.getLastName(), userDTO.getLastName());
+		assertEquals(updateModel.getEmail(), userDTO.getEmail());
+		assertEquals(updateModel.getPhone(), userDTO.getPhone());
+		assertEquals(updateModel.getDateOfBirth(), userDTO.getDateOfBirth());
 	}
 }

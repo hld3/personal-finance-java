@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dodson.personalfinance.dto.LoginDTO;
 import com.dodson.personalfinance.dto.UserDTO;
 import com.dodson.personalfinance.dto.UserProfileDTO;
+import com.dodson.personalfinance.model.UserModel;
 import com.dodson.personalfinance.service.UserLoginService;
 import com.dodson.personalfinance.service.UserProfileService;
 import com.dodson.personalfinance.service.UserRegisterService;
+import com.dodson.personalfinance.service.UserUpdateProfileService;
 
 import jakarta.validation.Valid;
 
@@ -33,11 +36,13 @@ public class UserController {
 	private UserRegisterService registerService;
 	private UserLoginService loginService;
 	private UserProfileService userProfileService;
+	private UserUpdateProfileService userUpdateProfileService;
 
-	UserController(UserRegisterService userService, UserLoginService loginService, UserProfileService userProfileService) {
+	UserController(UserRegisterService userService, UserLoginService loginService, UserProfileService userProfileService, UserUpdateProfileService userUpdateProfileService) {
 		this.registerService = userService;
 		this.loginService = loginService;
 		this.userProfileService = userProfileService;
+		this.userUpdateProfileService = userUpdateProfileService;
 	}
 
 	@PostMapping("/register")
@@ -88,9 +93,25 @@ public class UserController {
 		return ResponseEntity.ok(profile);
 	}
 
+	@PutMapping("/update")
+	public ResponseEntity<?> updateProfile(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			Map<String, String> errors = constructErrors(bindingResult);
+			logger.error("There was an error with the login request: " + errors);
+			return ResponseEntity.badRequest().body(Map.of("errors", errors));
+		}
+
+		UserModel updatedModel = userUpdateProfileService.updateUserProfile(user);
+		if (updatedModel == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().build();
+	}
+
 	private Map<String, String> constructErrors(BindingResult bindingResult) {
 		return bindingResult.getFieldErrors()
 				.stream()
 				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
 	}
+
 }
