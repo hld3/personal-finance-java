@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+			    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+			    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+	<changeSet id="002-001" author="Harry Dodson">
+		<comment>Adding the transaction table</comment>
+		<createTable tableName="transaction_model">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="user_id" type="char(36)">
+				<constraints nullable="false" />
+			</column>
+			<column name="category_id" type="bigint" />
+			<column name="amount" type="double">
+				<constraints nullable="false" />
+			</column>
+			<column name="date" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="varchar(255)" />
+			<column name="created_at" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="updated_at" type="bigint" />
+			<!--Below Enums will need to be enforced programmatically-->
+			<column name="type" type="varchar(10)" />
+			<column name="payment_method" type="varchar(20)" />
+			<column name="status" type="varchar(20)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="002-002" author="Harry Dodson">
+		<comment>Adding the category table</comment>
+		<createTable tableName="category_model">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="parent_id" type="bigint" />
+			<column name="user_id" type="char(36)">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="varchar(255)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="002-003" author="Harry Dodson">
+		<comment>Adding foreign key for transaction model to category</comment>
+		<addForeignKeyConstraint baseTableName="category_model"
+			baseColumnNames="parent_id"
+			constraintName="transaction_category_fk"
+			referencedTableName="transaction_model"
+			referencedColumnNames="id" />
+	</changeSet>
+</databaseChangeLog>
