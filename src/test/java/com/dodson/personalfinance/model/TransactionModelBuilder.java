@@ -11,6 +11,7 @@ public class TransactionModelBuilder {
 	public TransactionModel build() {
 		TransactionModel tm = new TransactionModel();
 		tm.setUserId(UUID.randomUUID().toString());
+		tm.setTransactionId(UUID.randomUUID().toString());
 		tm.setCategoryId(faker.number().randomNumber());
 		tm.setAmount((int) faker.number().randomNumber(3, true));
 		tm.setDate(faker.number().randomNumber());

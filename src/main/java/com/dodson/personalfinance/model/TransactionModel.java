@@ -21,6 +21,9 @@ public class TransactionModel {
 	@Column(name = "user_id", columnDefinition = "char(36)", nullable = false)
 	private String userId;
 
+	@Column(name = "transaction_id", columnDefinition = "char(36)", nullable = false)
+	private String transactionId;
+
 	@PrimaryKeyJoinColumn
 	@Column(name = "category_id")
 	private long categoryId;
@@ -66,6 +69,14 @@ public class TransactionModel {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 
 	public long getCategoryId() {

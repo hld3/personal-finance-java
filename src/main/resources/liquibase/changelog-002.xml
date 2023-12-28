@@ -13,6 +13,9 @@
 			<column name="id" autoIncrement="true" type="bigint">
 				<constraints primaryKey="true" />
 			</column>
+			<column name="transaction_id" type="char(36)">
+				<constraints nullable="false" />
+			</column>
 			<column name="user_id" type="char(36)">
 				<constraints nullable="false" />
 			</column>
