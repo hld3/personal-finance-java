@@ -2,6 +2,7 @@ package com.dodson.personalfinance.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.dodson.personalfinance.dto.TransactionDTO;
 import com.dodson.personalfinance.dto.TransactionDTOBuilder;
 import com.dodson.personalfinance.model.TransactionModel;
-import com.dodson.personalfinance.repository.TransactionRepository;
 
 @SpringBootTest
 public class TransactionSaveServiceIntegrationTest {
@@ -18,15 +18,11 @@ public class TransactionSaveServiceIntegrationTest {
 	@Autowired
 	private TransactionSaveService transactionSaveService;
 
-	@Autowired
-	private TransactionRepository transactionRepository;
-
 	@Test
 	void test_whenAddingValidTransaction_thenSuccessful() {
 		TransactionDTO transactionDTO = new TransactionDTOBuilder().build();
-		transactionSaveService.addTransaction(transactionDTO);
 
-		TransactionModel result = transactionRepository.findByTransactionId(transactionDTO.getTransactionId());
+		TransactionModel result = transactionSaveService.addTransaction(transactionDTO);
 
 		assertNotNull(result);
 		assertEquals(result.getUserId(), transactionDTO.getUserId());
@@ -40,5 +36,11 @@ public class TransactionSaveServiceIntegrationTest {
 		assertEquals(result.getType(), transactionDTO.getType());
 		assertEquals(result.getPaymentMethod(), transactionDTO.getPaymentMethod());
 		assertEquals(result.getStatus(), transactionDTO.getStatus());
+	}
+
+	@Test
+	void test_whenTransactionIsNull_thenResultIsNull() {
+		TransactionModel result = transactionSaveService.addTransaction(null);
+		assertNull(result);
 	}
 }
