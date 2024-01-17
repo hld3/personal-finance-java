@@ -25,7 +25,7 @@ public class TransactionRepositoryIntegrationTest {
 	public void test_saveTransaction() {
 		TransactionModel tm = new TransactionModelBuilder().build();
 
-		TransactionModel savedTm = transactionRepository.saveAndFlush(tm);
+		TransactionModel savedTm = transactionRepository.save(tm);
 
 		assertThat(tm, is(savedTm));
 	}
@@ -39,7 +39,7 @@ public class TransactionRepositoryIntegrationTest {
 	@Test
 	public void test_getTransaction() {
 		TransactionModel tm = new TransactionModelBuilder().build();
-		transactionRepository.saveAndFlush(tm);
+		transactionRepository.save(tm);
 
 		TransactionModel savedTm = transactionRepository.findByTransactionId(tm.getTransactionId());
 

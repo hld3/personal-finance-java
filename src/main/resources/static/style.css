@@ -1,0 +1,16 @@
+.transaction-list {
+	border: solid black 1px;
+	text-align: center;
+}
+
+.transaction-headers {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	margin-bottom: 15px;
+	border: solid black 1px;
+}
+
+.transaction {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+}

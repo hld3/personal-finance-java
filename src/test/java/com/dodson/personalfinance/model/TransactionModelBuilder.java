@@ -19,7 +19,7 @@ public class TransactionModelBuilder {
 		tm.setCreatedAt(faker.number().randomNumber());
 		tm.setUpdatedAt(faker.number().randomNumber());
 		tm.setType(getRandomEnum(TransactionType.class));
-		tm.setPaymentMethod(getRandomEnum(TransactionMethod.class));
+//		tm.setPaymentMethod(getRandomEnum(TransactionMethod.class));
 		tm.setStatus(getRandomEnum(TransactionStatus.class));
 
 		return tm;

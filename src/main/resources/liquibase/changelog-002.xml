@@ -33,7 +33,7 @@
 			<column name="updated_at" type="bigint" />
 			<!--Below Enums will need to be enforced programmatically-->
 			<column name="type" type="varchar(10)" />
-			<column name="payment_method" type="varchar(20)" />
+			<!-- <column name="payment_method" type="varchar(20)" /> -->
 			<column name="status" type="varchar(20)" />
 		</createTable>
 	</changeSet>

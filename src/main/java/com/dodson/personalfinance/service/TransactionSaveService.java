@@ -39,7 +39,7 @@ public class TransactionSaveService {
 		tm.setDate(transactionDTO.getDate());
 		tm.setDescription(transactionDTO.getDescription());
 		tm.setType(transactionDTO.getType());
-		tm.setPaymentMethod(transactionDTO.getPaymentMethod());
+		// tm.setPaymentMethod(transactionDTO.getPaymentMethod());
 		tm.setStatus(transactionDTO.getStatus());
 		// TODO these should probably be set to the current time.
 		tm.setCreatedAt(transactionDTO.getCreatedAt());
