@@ -12,6 +12,6 @@ public interface TransactionRepository extends CrudRepository<TransactionModel, 
 
 	TransactionModel findByTransactionId(String transactionId);
 
-	@Query("Select tm from transaction_model where userId = :userId")
+	@Query("Select tm from transaction_model tm where userId = :userId")
 	List<TransactionModel> findAllByUserId(@Param("userId") String userId);
 }

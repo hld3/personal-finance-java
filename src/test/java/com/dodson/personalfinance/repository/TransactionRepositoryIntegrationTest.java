@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -44,5 +46,27 @@ public class TransactionRepositoryIntegrationTest {
 		TransactionModel savedTm = transactionRepository.findByTransactionId(tm.getTransactionId());
 
 		assertThat(tm, is(savedTm));
+	}
+
+	@Test
+	public void test_findAllByUserId() {
+		List<TransactionModel> expectedTransactions = new ArrayList<>();
+		String expectedUserId = UUID.randomUUID().toString();
+		expectedTransactions.add(new TransactionModelBuilder().withUserId(expectedUserId).build());
+		expectedTransactions.add(new TransactionModelBuilder().withUserId(expectedUserId).build());
+		expectedTransactions.add(new TransactionModelBuilder().withUserId(expectedUserId).build());
+		transactionRepository.saveAll(expectedTransactions);
+
+		//noise
+		List<TransactionModel> noise = new ArrayList<>();
+		noise.add(new TransactionModelBuilder().build());
+		noise.add(new TransactionModelBuilder().build());
+		noise.add(new TransactionModelBuilder().build());
+		transactionRepository.saveAll(noise);
+
+		List<TransactionModel> results = transactionRepository.findAllByUserId(expectedUserId);
+		
+		assertThat(results.size(), is(expectedTransactions.size()));
+		results.forEach(p -> assertThat(p.getUserId(), is(expectedUserId)));
 	}
 }
