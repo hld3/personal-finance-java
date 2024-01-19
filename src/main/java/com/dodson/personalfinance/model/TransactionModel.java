@@ -47,9 +47,9 @@ public class TransactionModel {
 	@Column(name = "type", length = 10)
 	private TransactionType type;
 
-	// @Enumerated(EnumType.STRING)
-	// @Column(name = "payment_method", length = 20)
-	// private TransactionMethod paymentMethod;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "payment_method", length = 20)
+	private TransactionMethod paymentMethod;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", length = 20)
@@ -135,13 +135,13 @@ public class TransactionModel {
 		this.type = type;
 	}
 
-	// public TransactionMethod getPaymentMethod() {
-	// 	return paymentMethod;
-	// }
-	//
-	// public void setPaymentMethod(TransactionMethod paymentMethod) {
-	// 	this.paymentMethod = paymentMethod;
-	// }
+	public TransactionMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(TransactionMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
 
 	public TransactionStatus getStatus() {
 		return status;

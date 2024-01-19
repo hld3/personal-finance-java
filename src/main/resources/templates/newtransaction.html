@@ -1,0 +1,36 @@
+<div class="new-transaction-container">
+	<div class="new-transaction-list">
+		<div class="new-transaction-headers">
+			<div class="transaction-description">Description</div>
+			<div class="transaction-amount">Amount</div>
+			<div class="transaction-date">Date</div>
+			<div class="transaction-type">Transaction Type</div>
+			<div class="transaction-method">Payment Method</div>
+			<div class="transaction-status">Status</div>
+		</div>
+		<div class="new-transaction-values">
+			<input id="description" type="text" name="description">
+			<input id="amount" type="number" name="amount">
+			<input id="date" type="date" name="date">
+			<select id="transaction-type" name="type">
+				<option value="INCOME">Income</option>
+				<option value="EXPENSE">Expense</option>
+			</select>
+			<select id="transaction-method" name="method">
+				<option value="CASH">Cash</option>
+				<option value="CREDIT_CARD">Credit Card</option>
+				<option value="BANK_TRANSFER">Bank Transfer</option>
+			</select>
+			<select id="transaction-status" name="status">
+				<option value="PENDING">Pending</option>
+				<option value="CLEARED">Cleared</option>
+				<option value="CANCELLED">Cancelled</option>
+			</select>
+		</div>
+	</div>
+	<div class="add-transaction-button">
+		<button hx-post="/transaction/savetest"
+			hx-include="#description, #amount, #date, #transaction-type, #transaction-method, #transaction-status"
+			hx-target=".append-transaction" hx-swap="outerHTML">Add Transaction</button>
+	</div>
+</div>

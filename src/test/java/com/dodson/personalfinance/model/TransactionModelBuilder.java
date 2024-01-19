@@ -8,7 +8,7 @@ public class TransactionModelBuilder {
 
 	Faker faker = new Faker();
 	String userId = UUID.randomUUID().toString();
-	
+
 	public TransactionModel build() {
 		TransactionModel tm = new TransactionModel();
 		tm.setUserId(this.userId);
@@ -20,7 +20,7 @@ public class TransactionModelBuilder {
 		tm.setCreatedAt(faker.number().randomNumber());
 		tm.setUpdatedAt(faker.number().randomNumber());
 		tm.setType(getRandomEnum(TransactionType.class));
-//		tm.setPaymentMethod(getRandomEnum(TransactionMethod.class));
+		tm.setPaymentMethod(getRandomEnum(TransactionMethod.class));
 		tm.setStatus(getRandomEnum(TransactionStatus.class));
 
 		return tm;

@@ -1,0 +1,10 @@
+<div class="transaction">
+	<div class="transaction-description" th:text="${transaction.description}">description</div>
+	<div class="transaction-amount" th:text="${transaction.amount}">amount</div>
+	<div class="transaction-date" th:text="${transaction.date}">date</div>
+	<div class="transaction-type" th:text="${transaction.type}">type</div>
+	<div class="transaction-payment" th:text="${transaction.paymentMethod}">payment method</div>
+	<div class="transaction-status" th:text="${transaction.status}">status</div>
+	<div class="transaction-created" th:text="${transaction.createdAt}">created</div>
+</div>
+<div class="append-transaction"></div>

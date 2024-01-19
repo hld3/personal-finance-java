@@ -34,7 +34,7 @@ public class TransactionSaveServiceIntegrationTest {
 		assertEquals(result.getCreatedAt(), transactionDTO.getCreatedAt());
 		assertEquals(result.getUpdatedAt(), transactionDTO.getUpdatedAt());
 		assertEquals(result.getType(), transactionDTO.getType());
-//		assertEquals(result.getPaymentMethod(), transactionDTO.getPaymentMethod());
+		assertEquals(result.getPaymentMethod(), transactionDTO.getPaymentMethod());
 		assertEquals(result.getStatus(), transactionDTO.getStatus());
 	}
 

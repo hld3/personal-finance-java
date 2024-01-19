@@ -12,27 +12,34 @@
 
 <body>
 	<h1>Transactions</h1>
-	<div class="container">
+	<div class="transaction-container">
 		<div class="transaction-list">
 			<div class="transaction-headers">
 				<!-- <div class="transaction-column">Transaction Id</div> -->
 				<div class="description-column">Description</div>
 				<div class="amount-column">Amount</div>
 				<div class="date-column">Date</div>
-				<div class="created-column">Created At</div>
 				<div class="type-column">Type</div>
+				<div class="payment-column">Payment Method</div>
 				<div class="status-column">Status</div>
+				<div class="created-column">Created At</div>
 			</div>
 			<div class="transaction" th:each="transaction : ${transactions}">
 				<!-- <div class="transaction-id" th:text="${transaction.transactionId}">Transaction Id</div> TODO make this 'category' when done-->
-				<div class="transaction-description" th:text="${transaction.description}">description</div>
+				<div class="transaction-description" th:text="${transaction.description}">description
+				</div>
 				<div class="transaction-amount" th:text="${transaction.amount}">amount</div>
 				<div class="transaction-date" th:text="${transaction.date}">date</div>
-				<div class="transaction-created" th:text="${transaction.createdAt}">created</div>
 				<div class="transaction-type" th:text="${transaction.type}">type</div>
+				<div class="transaction-payment" th:text="${transaction.paymentMethod}">payment method</div>
 				<div class="transaction-status" th:text="${transaction.status}">status</div>
+				<div class="transaction-created" th:text="${transaction.createdAt}">created</div>
 			</div>
+			<div class="append-transaction"></div>
 		</div>
+	</div>
+	<div class="add-button">
+		<button hx-get="/transaction/save" hx-target=".add-button" hx-swap="outerHTML">New Transaction</button>
 	</div>
 </body>
 
